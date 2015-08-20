@@ -62,7 +62,38 @@ function createMarker(place) {
 
 //console.log(google.maps.places.PlaceResult);
 initMap();
-console.log(locations);
+
+
+
+
+var ViewModel = function() {
+  var self = this;
+  
+  self.placeList = ko.observableArray([]);
+  console.log(self.placeList());
+
+  locations.forEach(function(place){
+      self.placeList.push(place);
+  });
+
+  /*
+  for (var i = 0; i < locations.length; i++ ) {
+      self.placeList.push(locations[i]);
+      console.log(self.placeList());
+  }
+  */
+
+  console.log(self.placeList());
+};
+
+
+ko.applyBindings(new ViewModel());
+
+
+
+
+
+
 
 
 
@@ -102,20 +133,6 @@ function initMap() {
 
 initMap();
 */
-
-
-var ViewModel = function() {
-	 
-};
-
-ko.applyBindings(new ViewModel());
-
-
-
-
-
-
-
 
 
 
