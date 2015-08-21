@@ -7,6 +7,12 @@ html, body {
 
 #map {
 	height: 100%;
+	width: 50%;
 }
 
 
+.list-view {
+	position: absolute;
+	right: 0;
+	top: 0;
+}

@@ -75,14 +75,15 @@ var ViewModel = function() {
       self.placeList.push(place);
   });
 
-  /*
-  for (var i = 0; i < locations.length; i++ ) {
-      self.placeList.push(locations[i]);
-      console.log(self.placeList());
-  }
-  */
+  // search bar functionality
+  self.points = ko.observableArray(locations);
+  self.query = ko.observable('');
 
-  console.log(self.placeList());
+  self.search = ko.computed(function(){
+    return ko.utils.arrayFilter(self.points(), function(point){
+      return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+    });
+  });
 };
 
 
