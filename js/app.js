@@ -39,9 +39,8 @@ function callback(results, status) {
       };
 
       locations.push(place);
-
-      //console.log(locations);
     }
+    ko.applyBindings(new ViewModel()); // call it from here to wait for locations to be built
   }
 }
 
@@ -68,7 +67,7 @@ initMap();
 
 var ViewModel = function() {
   var self = this;
-  
+
   self.placeList = ko.observableArray([]);
   console.log(self.placeList());
 
@@ -87,7 +86,7 @@ var ViewModel = function() {
 };
 
 
-ko.applyBindings(new ViewModel());
+//ko.applyBindings(new ViewModel());
 
 
 
