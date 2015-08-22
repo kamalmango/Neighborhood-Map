@@ -2,6 +2,7 @@
 var locations = [];
 var map;
 var infowindow;
+//var marker
 
 function initMap() {
   var latlng = {lat: 38.9047, lng: -77.0164};
@@ -52,17 +53,28 @@ function createMarker(place) {
     position: place.geometry.location
   });
 
-
+  //marker.addListener('click', toggleBounce);
   google.maps.event.addListener(marker, 'click', function() {
+    toggleBounce(marker);
     infowindow.setContent(place.name);
     infowindow.open(map, this);
+    //toggleBounce(marker);
   });
+
 }
 
 //console.log(google.maps.places.PlaceResult);
 initMap();
 
-
+// make marker bounce
+function toggleBounce(marker) {
+  if (marker.getAnimation() !== null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(function(){marker.setAnimation(null);}, 2100);
+  }
+}
 
 
 var ViewModel = function() {
@@ -84,10 +96,12 @@ var ViewModel = function() {
       return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
     });
   });
+
+
 };
 
 
-//ko.applyBindings(new ViewModel());
+
 
 
 
