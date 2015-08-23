@@ -55,7 +55,7 @@ function createMarker(place) {
 
   //marker.addListener('click', toggleBounce);
   google.maps.event.addListener(marker, 'click', function() {
-    toggleBounce(marker);
+    toggleBounce(this);
     infowindow.setContent(place.name);
     infowindow.open(map, this);
     //toggleBounce(marker);
@@ -67,6 +67,11 @@ function createMarker(place) {
 initMap();
 
 // make marker bounce
+function toggleBounce(marker){
+  marker.setAnimation(google.maps.Animation.BOUNCE);
+  setTimeout(function(){marker.setAnimation(null);}, 2100);
+}
+/*
 function toggleBounce(marker) {
   if (marker.getAnimation() !== null) {
     marker.setAnimation(null);
@@ -75,6 +80,7 @@ function toggleBounce(marker) {
     setTimeout(function(){marker.setAnimation(null);}, 2100);
   }
 }
+*/
 
 
 var ViewModel = function() {
