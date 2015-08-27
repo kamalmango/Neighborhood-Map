@@ -25,14 +25,10 @@ function initMap() {
 
 function callback(results, status) {
   var place;
-
+  //console.log(results);
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       //createMarker(results[i]);
-      createMarker(results[i]);
-
-      
-     
       // create data model
       place = {};
 
@@ -42,51 +38,58 @@ function callback(results, status) {
         'lng' : results[i].geometry.location.lng()
       };
 
-      locations.push(place);
+      //locations.push(place);
+      locations.push(new Place(place));
     }
+    createMarker();
+    animateMarker(locations);
+    /*
+    locations.forEach(function(place){
+      animateMarker(place);
+    })
+  */
+
     ko.applyBindings(new ViewModel()); // call it from here to wait for locations to be built
   }
 }
 
-function createMarker(place) {
-  var placeLoc = place.geometry.location;
-  //locations.push(placeLoc);
+initMap();
 
-  /*
-  var marker = new google.maps.Marker({
-    map: map,
-    position: place.geometry.location
-  });
- */
+function createMarker() {
 
+  locations.forEach(function(place) {
+    //console.log(place);
+    var markerOptions = {
+      map: map,
+      position: place.location
+    };
 
-  var markerStats = {
-    map: map,
-    position: place.geometry.location
-  }
-
-  var marker = new google.maps.Marker(markerStats);
-  place.marker = marker;
-
-  google.maps.event.addListener(marker, 'click', function() {
-    toggleBounce(this);
-    infowindow.setContent(place.name);
-    infowindow.open(map, this);
+    place.marker = new google.maps.Marker(markerOptions);
+    
   });
 
- 
 }
 
 
-//console.log(google.maps.places.PlaceResult);
-initMap();
-
-/*
-function openInfowindow(marker, place) {
+function openInfowindow(place, marker) {
   infowindow.setContent(place.name);
   infowindow.open(map, marker);
 }
-*/
+
+
+function animateMarker() {
+
+  locations.forEach(function(place){
+    google.maps.event.addListener(place.marker, 'click', function() {
+      toggleBounce(this);
+      infowindow.setContent(place.name);
+      infowindow.open(map, this);
+    });
+  })
+  
+}
+
+
 
 // make marker bounce
 function toggleBounce(marker){
@@ -99,6 +102,7 @@ function Place(dataObj) {
   this.name = dataObj.name;
   this.location = dataObj.location;
   this.marker = null;
+  //this.marker = dataObj.marker;
 }
 
 
@@ -106,19 +110,6 @@ function Place(dataObj) {
 var ViewModel = function() {
   var self = this;
   
-  self.placeList = ko.observableArray([]);
-  console.log(self.placeList());
-  
-  
-  locations.forEach(function(place) {
-    self.placeList.push(new Place(place));
-  });
-
-  /* 
-  locations.forEach(function(place){
-      self.placeList.push(place);
-  });
-*/
 
   // search bar functionality
   self.points = ko.observableArray(locations);
@@ -130,8 +121,23 @@ var ViewModel = function() {
     });
   });
 
-  //console.log(self.points);
-  console.log(self.placeList());
+  /*
+  self.animateMarker = function() {
+    console.log('hi');
+    locations.forEach(function(place){
+      google.maps.event.addListener(place.marker, 'click', function() {
+        toggleBounce(this);
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+      });
+    });
+
+  };
+  self.animateMarker();
+  */
+  
+  console.log(self.search());
+  
 };
 
 
