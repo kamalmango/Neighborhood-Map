@@ -42,7 +42,7 @@ function callback(results, status) {
       locations.push(new Place(place));
     }
     createMarker();
-    animateMarker(locations);
+    //animateMarker(locations);
     /*
     locations.forEach(function(place){
       animateMarker(place);
@@ -77,20 +77,6 @@ function openInfowindow(place, marker) {
 }
 
 
-function animateMarker() {
-
-  locations.forEach(function(place){
-    google.maps.event.addListener(place.marker, 'click', function() {
-      toggleBounce(this);
-      infowindow.setContent(place.name);
-      infowindow.open(map, this);
-    });
-  })
-  
-}
-
-
-
 // make marker bounce
 function toggleBounce(marker){
   marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -112,18 +98,62 @@ var ViewModel = function() {
   
 
   // search bar functionality
+  
   self.points = ko.observableArray(locations);
   self.query = ko.observable('');
-
+  console.log(self.points());
   self.search = ko.computed(function(){
     return ko.utils.arrayFilter(self.points(), function(point){
-      return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+      if (point.name.toLowerCase().indexOf(self.query().toLowerCase()) === -1){
+        point.marker.setMap(null);
+      } else {
+        point.marker.setMap(map);
+      }
+      return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0; //test if array (true or false)
     });
   });
 
   /*
+  self.search().forEach(function(place){
+    place.marker.setMap(null);
+  })
+ */
+
+  /*
+  locations.forEach(function(place){
+    if (self.search().indexOf(place) > -1) {
+      place.marker.setMap(null);
+    }
+  })
+*/
+
+  /*
+  self.hideMarkers = function() {
+    locations.forEach(function(place){
+      if (self.search().indexOf(place) === -1) {
+        place.marker.setMap(null);
+      }
+    })
+  }
+  */
+
+  self.hideMarkers = function() {
+    if (self.search().called === true) {
+      console.log('hi');
+      locations.forEach(function(place){
+        if (self.search().indexOf(place) === -1) {
+          place.marker.setMap(null);
+        }
+      })
+    }   
+  }
+  self.hideMarkers();
+  
+
+
+
+  
   self.animateMarker = function() {
-    console.log('hi');
     locations.forEach(function(place){
       google.maps.event.addListener(place.marker, 'click', function() {
         toggleBounce(this);
@@ -134,9 +164,23 @@ var ViewModel = function() {
 
   };
   self.animateMarker();
-  */
   
-  console.log(self.search());
+  
+  
+  self.clickMarker = function(name) {
+    //console.log(name);
+    locations.forEach(function(place){
+      if (place.name === name) {
+        toggleBounce(place.marker);
+      }
+    })
+  }
+  
+
+  
+  
+  
+  //console.log(self.search());
   
 };
 
