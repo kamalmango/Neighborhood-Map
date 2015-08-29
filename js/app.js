@@ -113,45 +113,7 @@ var ViewModel = function() {
     });
   });
 
-  /*
-  self.search().forEach(function(place){
-    place.marker.setMap(null);
-  })
- */
-
-  /*
-  locations.forEach(function(place){
-    if (self.search().indexOf(place) > -1) {
-      place.marker.setMap(null);
-    }
-  })
-*/
-
-  /*
-  self.hideMarkers = function() {
-    locations.forEach(function(place){
-      if (self.search().indexOf(place) === -1) {
-        place.marker.setMap(null);
-      }
-    })
-  }
-  */
-
-  self.hideMarkers = function() {
-    if (self.search().called === true) {
-      console.log('hi');
-      locations.forEach(function(place){
-        if (self.search().indexOf(place) === -1) {
-          place.marker.setMap(null);
-        }
-      })
-    }   
-  }
-  self.hideMarkers();
   
-
-
-
   
   self.animateMarker = function() {
     locations.forEach(function(place){
