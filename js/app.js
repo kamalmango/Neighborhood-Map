@@ -119,8 +119,11 @@ var ViewModel = function() {
     locations.forEach(function(place){
       google.maps.event.addListener(place.marker, 'click', function() {
         toggleBounce(this);
+        openInfowindow(place, place.marker);
+        /*
         infowindow.setContent(place.name);
         infowindow.open(map, this);
+        */
       });
     });
 
@@ -134,6 +137,7 @@ var ViewModel = function() {
     locations.forEach(function(place){
       if (place.name === name) {
         toggleBounce(place.marker);
+        openInfowindow(place, place.marker);
       }
     })
   }
