@@ -71,7 +71,7 @@ function createMarker() {
 function openInfowindow(place, marker) {
   
   var infowindowHtml = '<div id="infoWindow>' +
-    '<div class = "place-name" data-bind = "text: $root.Place().name"></div>' +
+    '<div class = "place-name" data-bind = ""></div>' +
     '<img class = place-image src= "">' +
     '</div>';
 
