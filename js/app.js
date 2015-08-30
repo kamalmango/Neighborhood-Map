@@ -25,10 +25,10 @@ function initMap() {
 
 function callback(results, status) {
   var place;
-  //console.log(results);
+  console.log(results);
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
-      //createMarker(results[i]);
+      
       // create data model
       place = {};
 
@@ -38,17 +38,15 @@ function callback(results, status) {
         'lng' : results[i].geometry.location.lng()
       };
 
-      //locations.push(place);
+      console.log(results[i].photos);
+      if (results[i].photos) {
+        place.image = results[i].photos[0].getUrl({'maxWidth': 35, 'maxHeight': 35});
+      }
+      
+
       locations.push(new Place(place));
     }
     createMarker();
-    //animateMarker(locations);
-    /*
-    locations.forEach(function(place){
-      animateMarker(place);
-    })
-  */
-
     ko.applyBindings(new ViewModel()); // call it from here to wait for locations to be built
   }
 }
@@ -56,7 +54,6 @@ function callback(results, status) {
 initMap();
 
 function createMarker() {
-
   locations.forEach(function(place) {
     //console.log(place);
     var markerOptions = {
@@ -72,8 +69,26 @@ function createMarker() {
 
 
 function openInfowindow(place, marker) {
-  infowindow.setContent(place.name);
+  
+  var infowindowHtml = '<div id="infoWindow>' +
+    '<div class = "place-name" data-bind = "text: $root.Place().name"></div>' +
+    '<img class = place-image src= "">' +
+    '</div>';
+
+  var infoWindowOptions = {
+    content: infowindowHtml,
+    maxWidth: 200
+  };
+
+  //return new google.maps.InfoWindow(infoWindowOptions);
+  infowindow.setContent(infowindowHtml);
+  //$('.place-name').text(place.name);
   infowindow.open(map, marker);
+  /*
+  infowindow.setContent(place.name);
+  infowindow.setContent(place.image);
+  infowindow.open(map, marker);
+  */
 }
 
 
@@ -87,6 +102,7 @@ function toggleBounce(marker){
 function Place(dataObj) {
   this.name = dataObj.name;
   this.location = dataObj.location;
+  this.image = dataObj.image;
   this.marker = null;
   //this.marker = dataObj.marker;
 }

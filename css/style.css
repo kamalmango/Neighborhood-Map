@@ -29,13 +29,14 @@ input {
 /* remove bullets */
 li {
 	list-style-type: none;
+	font-weight: bold;
 }
 
 #restaurant-list {
   z-index: 100;
   position: fixed;
   right: 0px;
-  top: 50px;
+  top: 30px;
   background: none;
   height: auto;
   max-height: 100%;
@@ -57,3 +58,17 @@ li {
 #restaurant:hover {
   background: #4595d6;
 }
+
+#restaurant-toggle {
+  top: 0;
+  font: inherit;
+  font-weight: bold;
+  height: 50px;
+  width: 320px;
+  background-color: #0191c8;
+  color: #fff;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+}
+
