@@ -40,7 +40,7 @@ function callback(results, status) {
 
       console.log(results[i].photos);
       if (results[i].photos) {
-        place.image = results[i].photos[0].getUrl({'maxWidth': 35, 'maxHeight': 35});
+        place.image = results[i].photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200});
       }
       
 
@@ -71,24 +71,31 @@ function createMarker() {
 function openInfowindow(place, marker) {
   
   var infowindowHtml = '<div id="infoWindow>' +
-    '<div class = "place-name" data-bind = ""></div>' +
-    '<img class = place-image src= "">' +
+    '<div class = "place-name" data-bind = "">' + place.name + '</div>' +
+    '<img class = place-image src= "' + place.image + '">' +
     '</div>';
 
+
+    /*
   var infoWindowOptions = {
     content: infowindowHtml,
     maxWidth: 200
   };
+  */
 
   //return new google.maps.InfoWindow(infoWindowOptions);
+
+  
   infowindow.setContent(infowindowHtml);
+  infowindow.open(map, marker);
+  
+
   //$('.place-name').text(place.name);
-  infowindow.open(map, marker);
-  /*
-  infowindow.setContent(place.name);
-  infowindow.setContent(place.image);
-  infowindow.open(map, marker);
-  */
+  
+  //infowindow.setContent(place.name);
+  //infowindow.setContent(place.image);
+  //infowindow.open(map, marker);
+  
 }
 
 
