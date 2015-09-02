@@ -17,7 +17,9 @@
         <!--<h3 id="listview-header">Restaurants</h3>-->
         <button id="restaurant-toggle"> Restaurants </button>
         <ul id="restaurant-list" class="restaurant-list" data-bind="foreach: search()">
-        	<li id="restaurant" data-bind="text: name, click: $parent.clickMarker(name)"></li>
+        	<!--<li id="restaurant" data-bind="text: name, click: $parent.clickMarker(name)"></li>-->
+        	<li id="restaurant" data-bind="text: name, click: marker.click"></li>
+        	<!--<li id="restaurant" data-bind="text: name, click: clickMarker(name)"></li>-->
         </ul>
     </div>
 	

@@ -25,7 +25,7 @@ function initMap() {
 
 function callback(results, status) {
   var place;
-  console.log(results);
+  //console.log(results);
   if (status === google.maps.places.PlacesServiceStatus.OK) {
     for (var i = 0; i < results.length; i++) {
       
@@ -38,7 +38,7 @@ function callback(results, status) {
         'lng' : results[i].geometry.location.lng()
       };
 
-      console.log(results[i].photos);
+      //console.log(results[i].photos);
       if (results[i].photos) {
         place.image = results[i].photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200});
       }
@@ -62,6 +62,21 @@ function createMarker() {
     };
 
     place.marker = new google.maps.Marker(markerOptions);
+
+    place.marker.click = 'dick';
+
+    
+    google.maps.event.addListener(place.marker, 'click', function() {
+      toggleBounce(this);
+      openInfowindow(place, place.marker);
+    })
+
+
+    place.marker.click = function() {
+      toggleBounce(place.marker);
+      openInfowindow(place, place.marker);
+    };
+
     
   });
 
@@ -70,9 +85,9 @@ function createMarker() {
 
 function openInfowindow(place, marker) {
   
-  var infowindowHtml = '<div id="infoWindow>' +
-    '<div class = "place-name" data-bind = "">' + place.name + '</div>' +
-    '<img class = place-image src= "' + place.image + '">' +
+  var infowindowHtml = '<div id="infoWindow">' +
+    '<div class = "place-name">' + place.name + '</div>' +
+    '<img class = "place-image" src= "' + place.image + '">' +
     '</div>';
 
 
@@ -119,7 +134,6 @@ function Place(dataObj) {
 var ViewModel = function() {
   var self = this;
   
-
   // search bar functionality
   
   self.points = ko.observableArray(locations);
@@ -136,25 +150,14 @@ var ViewModel = function() {
     });
   });
 
-  
-  
-  self.animateMarker = function() {
-    locations.forEach(function(place){
-      google.maps.event.addListener(place.marker, 'click', function() {
-        toggleBounce(this);
-        openInfowindow(place, place.marker);
-        /*
-        infowindow.setContent(place.name);
-        infowindow.open(map, this);
-        */
-      });
-    });
+  /*
+  self.displayList = function() {
+    sealf.search = null;
+  }
+  */
 
-  };
-  self.animateMarker();
   
-  
-  
+  /*
   self.clickMarker = function(name) {
     //console.log(name);
     locations.forEach(function(place){
@@ -164,6 +167,8 @@ var ViewModel = function() {
       }
     })
   }
+  */
+  
   
 
   
