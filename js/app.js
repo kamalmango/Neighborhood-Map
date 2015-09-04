@@ -13,45 +13,73 @@ function initMap() {
   });
 
   infowindow = new google.maps.InfoWindow();
-
-  var service = new google.maps.places.PlacesService(map);
-  service.nearbySearch({
-    location: latlng,
-    radius: 2000, //500,
-    types: ['restaurant']
-  }, callback);
 }
 
 
-function callback(results, status) {
-  var place;
-  //console.log(results);
-  if (status === google.maps.places.PlacesServiceStatus.OK) {
-    for (var i = 0; i < results.length; i++) {
-      
-      // create data model
-      place = {};
+function callYelp() {
 
-      place.name = results[i].name;
-      place.location = {
-        'lat' : results[i].geometry.location.lat(),
-        'lng' : results[i].geometry.location.lng()
-      };
+  function nonce_generate(){
+    return (Math.floor(Math.random() * 1e12).toString());
+  } 
 
-      //console.log(results[i].photos);
-      if (results[i].photos) {
-        place.image = results[i].photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200});
+
+  var yelp_url = 'http://api.yelp.com/v2/search';
+  
+
+  var parameters = {
+    location: 'washington+dc',
+    oauth_consumer_key: 'HKEEu2MdseoJv8QK4GKyig',
+    oauth_token: '4En18EFYgqBLZm9yWtJeLOIGYEGx4xIq',
+    oauth_nonce: nonce_generate(),
+    oauth_timestamp: Math.floor(Date.now()/1000),
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_version : '1.0',
+    callback: 'cb'              
+  };
+
+
+
+  var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters, 'Qym8Yfq-k2ZGs2FFyNjK2ARWV40', 'HAmaTHm9-5CiLtfJ6xrZzN_N_78');
+  parameters.oauth_signature = encodedSignature;
+
+  var settings = {
+    url: yelp_url,
+    data: parameters,
+    cache: true,                
+    dataType: 'jsonp',
+    jsonpCallback: 'cb',
+    success: function(results) {
+      // Do stuff with results
+      console.log(results);
+      var place;
+      for (var i = 0; i < results.businesses.length; i++) {
+        place = {};
+        place.name = results.businesses[i].name;
+        place.location = {
+          'lat' : results.businesses[i].location.coordinate.latitude,
+          'lng' : results.businesses[i].location.coordinate.longitude
+        };
+        place.image = results.businesses[i].image_url;
+        
+
+        locations.push(new Place(place));
       }
-      
-
-      locations.push(new Place(place));
-    }
-    createMarker();
-    ko.applyBindings(new ViewModel()); // call it from here to wait for locations to be built
-  }
+      createMarker();
+      ko.applyBindings(new ViewModel());
+    },
+    error: function() {
+      // Do stuff on fail
+      console.log('ajax request failed');
+    } 
+  };
+ 
+  $.ajax(settings);
 }
+
 
 initMap();
+callYelp();
+
 
 function createMarker() {
   locations.forEach(function(place) {
@@ -63,7 +91,6 @@ function createMarker() {
 
     place.marker = new google.maps.Marker(markerOptions);
 
-    place.marker.click = 'dick';
 
     
     google.maps.event.addListener(place.marker, 'click', function() {
@@ -90,26 +117,9 @@ function openInfowindow(place, marker) {
     '<img class = "place-image" src= "' + place.image + '">' +
     '</div>';
 
-
-    /*
-  var infoWindowOptions = {
-    content: infowindowHtml,
-    maxWidth: 200
-  };
-  */
-
-  //return new google.maps.InfoWindow(infoWindowOptions);
-
   
   infowindow.setContent(infowindowHtml);
   infowindow.open(map, marker);
-  
-
-  //$('.place-name').text(place.name);
-  
-  //infowindow.setContent(place.name);
-  //infowindow.setContent(place.image);
-  //infowindow.open(map, marker);
   
 }
 
@@ -126,66 +136,7 @@ function Place(dataObj) {
   this.location = dataObj.location;
   this.image = dataObj.image;
   this.marker = null;
-  //this.marker = dataObj.marker;
 }
-
-
-
-
-function callYelp(locations) {
-  
-  function nonce_generate(){
-    return (Math.floor(Math.random() * 1e12).toString());
-  } 
-
-
-  var yelp_url = 'http://api.yelp.com/v2/search';
-  //var yelp_url = 'http://api.yelp.com/v2/business/' + locations[0].name;
-
-  var parameters = {
-    location: 'washington+dc',
-    //location: 'San+Francisco',
-    //cll: '"' + locations[0].location.lat + '","' + locations[0].location.lng + '"', 
-    //bounds: '38.9047,-77.0164',
-    oauth_consumer_key: 'HKEEu2MdseoJv8QK4GKyig',
-    oauth_token: '4En18EFYgqBLZm9yWtJeLOIGYEGx4xIq',
-    oauth_nonce: nonce_generate(),
-    oauth_timestamp: Math.floor(Date.now()/1000),
-    oauth_signature_method: 'HMAC-SHA1',
-    oauth_version : '1.0',
-    callback: 'cb'              
-  };
-
-
-
-  var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters, 'Qym8Yfq-k2ZGs2FFyNjK2ARWV40', 'HAmaTHm9-5CiLtfJ6xrZzN_N_78');
-  parameters.oauth_signature = encodedSignature;
-
-  var settings = {
-    url: yelp_url,
-    data: parameters,
-    cache: true,                
-    dataType: 'jsonp',
-    jsonpCallback: 'cb',
-    success: function(results) {
-      // Do stuff with results
-      console.log(results);
-    },
-    error: function() {
-      // Do stuff on fail
-      console.log('ajax request failed');
-    }
-  };
-
-  $.ajax(settings);
-}
-
-callYelp(locations);
-
-
-
-
-
 
 
 
@@ -207,26 +158,6 @@ var ViewModel = function() {
       return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0; //test if array (true or false)
     });
   });
-
-
-  /*
-  self.clickMarker = function(name) {
-    //console.log(name);
-    locations.forEach(function(place){
-      if (place.name === name) {
-        toggleBounce(place.marker);
-        openInfowindow(place, place.marker);
-      }
-    })
-  }
-  */
-  
-  
-
-  
-  
-  
-  //console.log(self.search());
   
 };
 
