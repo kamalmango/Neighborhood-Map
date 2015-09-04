@@ -132,42 +132,55 @@ function Place(dataObj) {
 
 
 
-function nonce_generate(){
-  return (Math.floor(Math.random() * 1e12).toString());
-} 
+function callYelp(locations) {
+  
+  function nonce_generate(){
+    return (Math.floor(Math.random() * 1e12).toString());
+  } 
 
 
-var yelp_url = 'http://api.yelp.com/v2/search?term=german+food&location=Hayes&cll=37.77493,-122.419415';
-var parameters = {
-  oauth_consumer_key: 'HKEEu2MdseoJv8QK4GKyig',
-  oauth_token: '4En18EFYgqBLZm9yWtJeLOIGYEGx4xIq',
-  oauth_nonce: nonce_generate(),
-  oauth_timestamp: Math.floor(Date.now()/1000),
-  oauth_signature_method: 'HMAC-SHA1',
-  oauth_version : '1.0',
-  callback: 'cb'              
-};
+  var yelp_url = 'http://api.yelp.com/v2/search';
+  //var yelp_url = 'http://api.yelp.com/v2/business/' + locations[0].name;
 
-var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters, 'Qym8Yfq-k2ZGs2FFyNjK2ARWV40', 'HAmaTHm9-5CiLtfJ6xrZzN_N_78');
-parameters.oauth_signature = encodedSignature;
+  var parameters = {
+    location: 'washington+dc',
+    //location: 'San+Francisco',
+    //cll: '"' + locations[0].location.lat + '","' + locations[0].location.lng + '"', 
+    //bounds: '38.9047,-77.0164',
+    oauth_consumer_key: 'HKEEu2MdseoJv8QK4GKyig',
+    oauth_token: '4En18EFYgqBLZm9yWtJeLOIGYEGx4xIq',
+    oauth_nonce: nonce_generate(),
+    oauth_timestamp: Math.floor(Date.now()/1000),
+    oauth_signature_method: 'HMAC-SHA1',
+    oauth_version : '1.0',
+    callback: 'cb'              
+  };
 
-var settings = {
-  url: yelp_url,
-  data: parameters,
-  cache: true,                
-  dataType: 'jsonp',
-  success: function(results) {
-    // Do stuff with results
-    console.log(results);
-  },
-  error: function() {
-    // Do stuff on fail
-    console.log('ajax request failed');
-  }
-};
 
-$.ajax(settings);
 
+  var encodedSignature = oauthSignature.generate('GET', yelp_url, parameters, 'Qym8Yfq-k2ZGs2FFyNjK2ARWV40', 'HAmaTHm9-5CiLtfJ6xrZzN_N_78');
+  parameters.oauth_signature = encodedSignature;
+
+  var settings = {
+    url: yelp_url,
+    data: parameters,
+    cache: true,                
+    dataType: 'jsonp',
+    jsonpCallback: 'cb',
+    success: function(results) {
+      // Do stuff with results
+      console.log(results);
+    },
+    error: function() {
+      // Do stuff on fail
+      console.log('ajax request failed');
+    }
+  };
+
+  $.ajax(settings);
+}
+
+callYelp(locations);
 
 
 
