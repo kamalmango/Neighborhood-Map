@@ -13,16 +13,36 @@
 	<div id="map"></div>
 	<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query, valueUpdate: 'keyup'"></input>
 	
-
+	
 	<div class="list-view">
-        <!--<h3 id="listview-header">Restaurants</h3>-->
-        <button id="restaurant-toggle"> Restaurants </button>
+        
+        <button id="restaurant-toggle"> Places </button>
         <ul id="restaurant-list" class="restaurant-list" data-bind="foreach: search()">
-        	<!--<li id="restaurant" data-bind="text: name, click: $parent.clickMarker(name)"></li>-->
-        	<li id="restaurant" data-bind="text: name, click: marker.click"></li>
-        	<!--<li id="restaurant" data-bind="text: name, click: clickMarker(name)"></li>-->
+        	
+        	<li id="restaurant"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">
+        		<div id="info">
+        			<h4 id="restaurant-name" data-bind="text: name"></h4>
+        			<p id="address" data-bind="text: address"></p>
+        		</div>
+        	</li>
+        	
         </ul>
     </div>
+	
+
+	<!--
+	<button id="restaurant-toggle"> Places </button>
+    <ul id="restaurant-list" class="restaurant-list" data-bind="foreach: search()">
+        	
+        <li id="restaurant"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">
+        	<div id="info">
+        		<h4 id="restaurant-name" data-bind="text: name"></h4>
+        		<p id="address" data-bind="text: address"></p>
+        	</div>
+        </li>
+        	
+    </ul>
+-->
 	
 	
 
