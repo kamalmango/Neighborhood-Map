@@ -96,24 +96,17 @@ function createMarker() {
     
     var redImage = {
       url: 'http://www.google.com/mapfiles/kml/paddle/red-circle.png',
-      //size: new google.maps.Size(71, 71),
-      //origin: new google.maps.Point(0, 0),
-      //anchor: new google.maps.Point(17, 34),
       scaledSize: new google.maps.Size(50, 50)
     };
 
     var bluImage = {
       url: 'http://www.google.com/mapfiles/kml/paddle/blu-circle.png',
-      //size: new google.maps.Size(71, 71),
-      //origin: new google.maps.Point(0, 0),
-      //anchor: new google.maps.Point(17, 34),
       scaledSize: new google.maps.Size(50, 50)
     }
 
     var markerOptions = {
       map: map,
       position: place.location,
-      //icon: 'http://www.google.com/mapfiles/kml/paddle/red-circle.png'
       icon: redImage
     };
 
@@ -123,12 +116,10 @@ function createMarker() {
 
     
     place.marker.changeColor = function() {
-      //place.marker.setIcon('http://www.google.com/mapfiles/kml/paddle/blu-circle.png');
       place.marker.setIcon(bluImage);
     };
     
     place.marker.resetColor = function() {
-      //place.marker.setIcon('http://www.google.com/mapfiles/kml/paddle/red-circle.png');
       place.marker.setIcon(redImage);
     };
     
@@ -143,7 +134,6 @@ function createMarker() {
       this.clicked = true;
       toggleBounce(this);
       openInfowindow(place, place.marker);
-      //changeColor(this);
       this.changeColor();
     });
 
@@ -175,27 +165,10 @@ function createMarker() {
       }
       
     });
-
-    /*
-    place.marker.addListener('click', function(){
-      place.marker.changeColor();
-    })
-  */
    
   });
  
 }
-
-/*
-function changeColor(marker) {
-  marker.setIcon('http://www.google.com/mapfiles/kml/paddle/red-circle.png');
-  //console.log('hi');
-}
-
-function resetColor(marker) {
-  marker.setIcon('http://www.google.com/mapfiles/kml/paddle/red-circle.png');
-}
-*/
 
 
 
@@ -213,42 +186,10 @@ function openInfowindow(place, marker) {
   
   infowindow.setContent(infowindowHtml);
   infowindow.open(map, marker);
-  //marker.changeColor();
-
-  /*
-  function isInfoWindowOpen(infoWindow){
-    var map = infoWindow.getMap();
-    return (map !== null && typeof map !== "undefined");
-  }
-
-  if (isInfoWindowOpen(infowindow)){
-    console.log('Im open');
-    //marker.changeColor();
-  } else {
-    console.log('Im closed');
-    //marker.resetColor();
-  }
-  */
-  /*
-  if (infowindow.view) {
-    console.log('Im open');
-  } else {
-    console.log('Im closed');
-  }
-  */
-
-  /*
-  if (infowindow.getMap()) {
-    console.log('Im open');
-  } else {
-    console.log('Im closed');
-  }
-  */
   
-
   
   google.maps.event.addListener(infowindow,'closeclick',function(){
-    //marker.clicked = false;
+    marker.clicked = false;
     marker.resetColor();
     
   });
@@ -296,18 +237,10 @@ var ViewModel = function() {
     });
   });
 
-  
-  
-  /*
-  function changeMarkerColor() {
-    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png');
-    console.log("hi");
-  }
-  */
-
-
-  
 };
+
+
+
 
 
 
