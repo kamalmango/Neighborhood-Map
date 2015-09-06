@@ -177,10 +177,9 @@ function openInfowindow(place, marker) {
   var infowindowHtml = '<div id="infoWindow">' +
     '<div class = "place-name">' + place.name + '</div>' +
     '<img class = "rating" src="' + place.ratingImage + '">' +
-    //'<img class = "place-image" src= "' + place.image + '">' +
     '<img class = "place-image" src= "' + place.image + '">' +
     '<div class = "review-snippet">' + place.reviewSnippet + '</div>' +
-    '<a href = "review-url">' + place.reviewUrl + '</a>' +
+    '<a href = "'+ place.reviewUrl+ '" target="_blank"> Click here to see more reviews </a>' +
     '</div>';
 
   
@@ -191,6 +190,8 @@ function openInfowindow(place, marker) {
   google.maps.event.addListener(infowindow,'closeclick',function(){
     marker.clicked = false;
     marker.resetColor();
+    //map.setCenter({lat: 38.9047, lng: -77.0164})
+    map.panTo({lat: 38.9047, lng: -77.0164})
     
   });
 
@@ -234,6 +235,13 @@ var ViewModel = function() {
         point.marker.setMap(map);
       }
       return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0; //test if array (true or false)
+    });
+  });
+
+
+  $("#place-toggle").click(function() {
+    $("#place-list").toggle("slow", function(){
+      //animation compete
     });
   });
 

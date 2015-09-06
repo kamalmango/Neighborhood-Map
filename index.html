@@ -16,12 +16,12 @@
 	
 	<div class="list-view">
         
-        <button id="restaurant-toggle"> Places </button>
-        <ul id="restaurant-list" class="restaurant-list" data-bind="foreach: search()">
+        <button id="place-toggle"> Places </button>
+        <ul id="place-list" data-bind="foreach: search()">
         	
-        	<li id="restaurant"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">
+        	<li id="place"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">
         		<div id="info">
-        			<h4 id="restaurant-name" data-bind="text: name"></h4>
+        			<h4 id="place-name" data-bind="text: name"></h4>
         			<p id="address" data-bind="text: address"></p>
         		</div>
         	</li>
@@ -29,24 +29,6 @@
         </ul>
     </div>
 	
-
-	<!--
-	<button id="restaurant-toggle"> Places </button>
-    <ul id="restaurant-list" class="restaurant-list" data-bind="foreach: search()">
-        	
-        <li id="restaurant"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">
-        	<div id="info">
-        		<h4 id="restaurant-name" data-bind="text: name"></h4>
-        		<p id="address" data-bind="text: address"></p>
-        	</div>
-        </li>
-        	
-    </ul>
--->
-	
-	
-
-    
     <script src="js/lib/jquery.min.js"></script>
 	<script src="js/lib/knockout-3.2.0.js"></script>
 	
