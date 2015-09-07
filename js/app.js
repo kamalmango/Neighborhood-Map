@@ -53,18 +53,18 @@ function callYelp() {
 
     // funciton for parsing the API JSON results
     success: function(results) {
+      
       var place;
       
       for (var i = 0; i < results.businesses.length; i++) {
         place = {}; //place object that will hold the neccessary information from the yelp results
         var image = results.businesses[i].image_url;
-        //var largeImage = image.replace('ms', 'o');
         place.name = results.businesses[i].name;
         place.location = {
           'lat' : results.businesses[i].location.coordinate.latitude,
           'lng' : results.businesses[i].location.coordinate.longitude
         };
-        place.image = image.replace('ms', 'l'); // get larger yelp image
+        place.image = image.replace('ms', 'l'); // get larger yelp image by replacing ms with l in the returned url
         place.ratingImage = results.businesses[i].rating_img_url;
         place.reviewSnippet = results.businesses[i].snippet_text;
         place.reviewUrl = results.businesses[i].url;
@@ -77,9 +77,8 @@ function callYelp() {
     },
     // function for if the API call to Yelp fails for any reason (ex. no internet)
     error: function() {
-      // Do stuff on fail
-      console.log('Yelp information not available at the moment');
-    } 
+      alert('Sorry, Yelp information not available at the moment');
+    }
   };
   $.ajax(settings);
 };
@@ -123,15 +122,19 @@ function createMarker() {
     place.marker.resetColor = function() {
       place.marker.setIcon(redImage);
     };
-    
-    //if the marker is clicked, it changes colors to blue, opens an infoWindow and bounces
-    google.maps.event.addListener(place.marker, 'click', function() {
+
+    function resetMarkers() {
       locations.forEach(function(place){
         if (place.marker.clicked === true) {
           place.marker.clicked = false;
           place.marker.setIcon(redImage);
         }
       });
+    }
+    
+    //if the marker is clicked, it changes colors to blue, opens an infoWindow and bounces
+    google.maps.event.addListener(place.marker, 'click', function() {
+      resetMarkers();
       this.clicked = true;
       toggleBounce(this);
       openInfowindow(place, place.marker);
@@ -140,12 +143,7 @@ function createMarker() {
 
     //marker click method to simulate what happens if a marker is clicked and be able to refernce as a binding in index.html
     place.marker.click = function() {
-      locations.forEach(function(place){
-        if (place.marker.clicked === true) {
-          place.marker.clicked = false;
-          place.marker.setIcon(redImage);
-        }
-      });
+      resetMarkers();
       this.clicked = true;
       toggleBounce(place.marker);
       openInfowindow(place, place.marker);
@@ -217,7 +215,6 @@ var ViewModel = function() {
   // search bar functionality
   self.points = ko.observableArray(locations);
   self.query = ko.observable('');
-  console.log(self.points());
   self.search = ko.computed(function(){
     return ko.utils.arrayFilter(self.points(), function(point){
       //filter markers as well as list

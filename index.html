@@ -19,7 +19,7 @@
         <button id="place-toggle"> Places </button>
         <ul id="place-list" data-bind="foreach: search()">
         	
-        	<li id="place"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">
+        	<li id="place"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">	
         		<div id="info">
         			<h4 id="place-name" data-bind="text: name"></h4>
         			<p id="address" data-bind="text: address"></p>
