@@ -41,8 +41,16 @@ li {
   list-style-type: none;
 }
 
+h3 {
+  margin-bottom: 0px;
+}
+
 #map {
 	height: 100%;
+}
+
+#snippet {
+  margin-bottom: 10px;
 }
 
 #info {
@@ -59,7 +67,14 @@ li {
   max-height: 100%;
   overflow-y: scroll;
   width: 340px;
+  
   transition: 0.2s;
+}
+
+@media (max-width: 1000px){
+  #place-list {
+    display: none;
+  }
 }
 
 #place {
@@ -82,7 +97,7 @@ li {
   font-size: 25px;
   font-weight: bold;
   height: 50px;
-  width: 320px;
+  width: 318px;
   /*
   background-color: #0191c8;
   */
