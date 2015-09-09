@@ -67,6 +67,7 @@ function callYelp() {
         place = {}; //place object that will hold the neccessary information from the yelp results
         var image = results.businesses[i].image_url;
         place.name = results.businesses[i].name;
+        place.id = i + 1;
         place.location = {
           'lat' : results.businesses[i].location.coordinate.latitude,
           'lng' : results.businesses[i].location.coordinate.longitude
@@ -213,12 +214,53 @@ function toggleBounce(marker){
 function Place(dataObj) {
   this.name = dataObj.name;
   this.location = dataObj.location;
+  this.id = dataObj.id;
   this.image = dataObj.image;
   this.marker = null; // a reference to the Places' map marker will be saved after the marker is built
   this.ratingImage = dataObj.ratingImage;
   this.reviewSnippet = dataObj.reviewSnippet;
   this.reviewUrl = dataObj.reviewUrl;
   this.address = dataObj.address;
+};
+
+
+ko.bindingHandlers.autoComplete = {
+  // Only using init event because the Jquery.UI.AutoComplete widget will take care of the update callbacks
+  init: function (element, valueAccessor, allBindings, viewModel, bindingContext) {
+    // { selected: mySelectedOptionObservable, options: myArrayOfLabelValuePairs }
+    var settings = valueAccessor();
+
+    var selectedOption = settings.selected;
+    var options = settings.options;
+
+    var updateElementValueWithLabel = function (event, ui) {
+      // Stop the default behavior
+      event.preventDefault();
+
+      // Update the value of the html element with the label 
+      // of the activated option in the list (ui.item)
+      $(element).val(ui.item.label);
+
+      // Update our SelectedOption observable
+      if(typeof ui.item !== "undefined") {
+        // ui.item - label|value|...
+        selectedOption(ui.item);
+      }
+    };
+
+    $(element).autocomplete({
+      source: options,
+      select: function (event, ui) {
+        updateElementValueWithLabel(event, ui);
+      },
+      focus: function (event, ui) {
+        updateElementValueWithLabel(event, ui);
+      },
+      change: function (event, ui) {
+        updateElementValueWithLabel(event, ui);
+      }
+    });
+  }
 };
 
 //KO View Model
@@ -240,7 +282,19 @@ var ViewModel = function() {
     });
   });
 
-  
+
+  self.users = locations;
+
+  self.selectedOption = ko.observable('');
+  self.options = self.users.map(function (element) {
+    // JQuery.UI.AutoComplete expects label & value properties, but we can add our own
+    return {
+      label: element.name,
+      value: element.id,
+        // This way we still have acess to the original object
+      object: element
+    };
+  });  
 };
 
 
@@ -252,6 +306,11 @@ $("#place-toggle").click(function() {
 $("#nav-toggle").click(function(){
   $("#place-list").toggle();
 });
+
+document.querySelector( "#nav-toggle" )
+  .addEventListener( "click", function() {
+    this.classList.toggle( "active" );
+  });
 
 
 

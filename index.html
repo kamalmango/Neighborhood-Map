@@ -11,12 +11,14 @@
 <body>
 
 	<div id="map"></div>
-	<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query">
-	
+	<!--<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query">-->
+
+	<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query, autoComplete: {selected: selectedOption, options:options}"/>
+	<!--<p1 data-bind="text: selectedOption().object.name"></p1>-->
 	
 	<div class="list-view">
         
-        <button id="place-toggle"> Places  </button>
+        <button id="place-toggle"> Places </button>
         <a id="nav-toggle"><span></span></a>
         <ul id="place-list" data-bind="foreach: search()">
         	
@@ -31,6 +33,7 @@
     </div>
 	
     <script src="js/lib/jquery.min.js"></script>
+    <script src="js/lib/jquery-ui.min.js"></script>
 	<script src="js/lib/knockout-3.2.0.js"></script>
 	
 	<script type="text/javascript"  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwh4A-Alc_xya9KUwkbi7DuY-HJ1I3hyk&libraries=places"> </script> 

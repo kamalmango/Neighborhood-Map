@@ -144,14 +144,20 @@ h3 {
   #place-toggle {
     display: none;
   }
-  
+
+  a {
+    position: fixed;
+    right: 20px;
+    top: 20px;
+  }
+
   #nav-toggle { cursor: pointer; padding: 10px 35px 16px 0px; }
   #nav-toggle span, #nav-toggle span:before, #nav-toggle span:after {
     cursor: pointer;
     border-radius: 1px;
     height: 5px;
     width: 35px;
-    background: white;
+    background: black;
     position: absolute;
     display: block;
     content: '';
@@ -160,7 +166,7 @@ h3 {
     top: -10px; 
   }
   #nav-toggle span:after {
-    bottom: -10px;
+    bottom: -10px; 
   }
 
   #nav-toggle span, #nav-toggle span:before, #nav-toggle span:after {
