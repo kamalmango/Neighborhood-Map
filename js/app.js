@@ -3,18 +3,25 @@
 var locations = [];
 var map;
 var infowindow;
+var mapZoom;
 
 // function that calls google maps API to bring up a map centered in Washington DC
 function initMap() {
+  if (window.innerWidth < 730) {
+    mapZoom = 12;
+  } else {
+    mapZoom = 14;
+  }
+
   var latlng = {lat: 38.9047, lng: -77.0164}; //DC latitude longitude
 
   map = new google.maps.Map(document.getElementById('map'), {
     center: latlng,
-    zoom: 14
+    zoom: mapZoom
   });
 
   infowindow = new google.maps.InfoWindow();
-};
+}
 
 // function that calls the Yelp Search API which returns a JSON with 20 key
 // locations around the DC area with information about each place including
@@ -120,7 +127,10 @@ function createMarker() {
     
     //marker method to reset the marker color to red
     place.marker.resetColor = function() {
-      place.marker.setIcon(redImage);
+      if (place.marker.clicked !== true) {
+        console.log(place.marker.clicked);
+        place.marker.setIcon(redImage);
+      }
     };
 
     function resetMarkers() {
@@ -143,11 +153,14 @@ function createMarker() {
 
     //marker click method to simulate what happens if a marker is clicked and be able to refernce as a binding in index.html
     place.marker.click = function() {
+      google.maps.event.trigger(place.marker, 'click');
+      /*
       resetMarkers();
-      this.clicked = true;
+      place.marker.clicked = true;
       toggleBounce(place.marker);
       openInfowindow(place, place.marker);
       place.marker.changeColor();
+      */
     };
 
     //marker color changes to blue if the mouse is over it
@@ -186,7 +199,7 @@ function openInfowindow(place, marker) {
   google.maps.event.addListener(infowindow,'closeclick',function(){
     marker.clicked = false;
     marker.resetColor();
-    map.panTo({lat: 38.9047, lng: -77.0164}) // centers the map when the infoWindow is closed
+    map.panTo({lat: 38.9047, lng: -77.0164}); // centers the map when the infoWindow is closed
   });
 };
 
@@ -227,11 +240,18 @@ var ViewModel = function() {
     });
   });
 
-  //JQuery that would toggle the list of places once the "Places" button on the top right is clicked
-  $("#place-toggle").click(function() {
-    $("#place-list").toggle();
-  });
+  
 };
+
+
+//JQuery that would toggle the list of places once the "Places" button on the top right is clicked
+$("#place-toggle").click(function() {
+  $("#place-list").toggle();
+});
+
+$("#nav-toggle").click(function(){
+  $("#place-list").toggle();
+});
 
 
 

@@ -11,12 +11,13 @@
 <body>
 
 	<div id="map"></div>
-	<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query, valueUpdate: 'keyup'"></input>
+	<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query">
 	
 	
 	<div class="list-view">
         
-        <button id="place-toggle"> Places </button>
+        <button id="place-toggle"> Places  </button>
+        <a id="nav-toggle"><span></span></a>
         <ul id="place-list" data-bind="foreach: search()">
         	
         	<li id="place"  data-bind= "click: marker.click, event: {mouseover: marker.changeColor, mouseout: marker.resetColor}">	
