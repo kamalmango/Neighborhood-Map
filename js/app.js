@@ -89,7 +89,7 @@ function callYelp() {
     }
   };
   $.ajax(settings);
-};
+}
 
 initMap();
 callYelp();
@@ -170,7 +170,7 @@ function createMarker() {
       }  
     }); 
   }); 
-};
+}
 
 
 //funciton that sets the information inside the google infoWindow and opens it
@@ -193,13 +193,13 @@ function openInfowindow(place, marker) {
     marker.resetColor();
     map.panTo({lat: 38.9047, lng: -77.0164}); // centers the map when the infoWindow is closed
   });
-};
+}
 
 // make marker bounce
 function toggleBounce(marker){
   marker.setAnimation(google.maps.Animation.BOUNCE);
   setTimeout(function(){marker.setAnimation(null);}, 2100);
-};
+}
 
 //function that creates a custom "Place" object which will store references for each locations key values for easy access
 function Place(dataObj) {
@@ -212,7 +212,7 @@ function Place(dataObj) {
   this.reviewSnippet = dataObj.reviewSnippet;
   this.reviewUrl = dataObj.reviewUrl;
   this.address = dataObj.address;
-};
+}
 
 
 ko.bindingHandlers.autoComplete = {
