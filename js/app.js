@@ -129,7 +129,6 @@ function createMarker() {
     //marker method to reset the marker color to red
     place.marker.resetColor = function() {
       if (place.marker.clicked !== true) {
-        console.log(place.marker.clicked);
         place.marker.setIcon(redImage);
       }
     };
@@ -155,13 +154,6 @@ function createMarker() {
     //marker click method to simulate what happens if a marker is clicked and be able to refernce as a binding in index.html
     place.marker.click = function() {
       google.maps.event.trigger(place.marker, 'click');
-      /*
-      resetMarkers();
-      place.marker.clicked = true;
-      toggleBounce(place.marker);
-      openInfowindow(place, place.marker);
-      place.marker.changeColor();
-      */
     };
 
     //marker color changes to blue if the mouse is over it
@@ -188,7 +180,6 @@ function openInfowindow(place, marker) {
     '<div class = "place-name">' + place.name + '</div>' +
     '<img class = "rating" src="' + place.ratingImage + '">' +
     '<img class = "place-image" src= "' + place.image + '">' +
-    //'<div class = "review-snippet">' + place.reviewSnippet + '</div>' +
     '<div class = "reviews"><h3>Review Snippet</h3><p id="snippet">' + place.reviewSnippet + '</p></div>'+
     '<a href = "'+ place.reviewUrl+ '" target="_blank"> Click here to see more reviews </a>' +
     '</div>';
@@ -283,10 +274,11 @@ var ViewModel = function() {
   });
 
 
-  self.users = locations;
+  // autocomplete search functionality
+  self.locations = locations;
 
   self.selectedOption = ko.observable('');
-  self.options = self.users.map(function (element) {
+  self.options = self.locations.map(function (element) {
     // JQuery.UI.AutoComplete expects label & value properties, but we can add our own
     return {
       label: element.name,
@@ -303,10 +295,12 @@ $("#place-toggle").click(function() {
   $("#place-list").toggle();
 });
 
+// have hamburger icon toggle the list
 $("#nav-toggle").click(function(){
   $("#place-list").toggle();
 });
 
+// change hamburger icon into an "x" icon once clicked
 document.querySelector( "#nav-toggle" )
   .addEventListener( "click", function() {
     this.classList.toggle( "active" );

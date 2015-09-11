@@ -7,6 +7,7 @@
 	<link rel="stylesheet" href="css/style.css">
 	<script src="js/lib/oauth-signature/dist/oauth-signature.js"></script>
 
+
 </head>
 <body>
 
@@ -15,7 +16,7 @@
 
 	<input id="s-input" class="controls" type="search" placeholder="Search" data-bind="textInput: query, autoComplete: {selected: selectedOption, options:options}"/>
 	<!--<p1 data-bind="text: selectedOption().object.name"></p1>-->
-	
+	<li id="autoSearch"></li>
 	<div class="list-view">
         
         <button id="place-toggle"> Places </button>
@@ -32,6 +33,7 @@
         </ul>
     </div>
 	
+
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/jquery-ui.min.js"></script>
 	<script src="js/lib/knockout-3.2.0.js"></script>

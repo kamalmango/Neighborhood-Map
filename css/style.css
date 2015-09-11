@@ -23,12 +23,9 @@ p {
 
 input {
   position: fixed;
-  left : 20px;
+  left: 20px;
   top: 20px;
   height: 40px;
-  /*
-  width: 200px;
-  */
   width: 300px;
   font-size: 20px;
   border-style: solid;
@@ -67,7 +64,6 @@ h3 {
   max-height: 100%;
   overflow-y: scroll;
   width: 340px;
-  
   transition: 0.2s;
 }
 
@@ -92,9 +88,6 @@ h3 {
   font-weight: bold;
   height: 50px;
   width: 318px;
-  /*
-  background-color: #0191c8;
-  */
   background-color: black;
   color: #fff;
   border: none;
@@ -106,15 +99,24 @@ h3 {
   background: #0191c8;;
 }
 
+.ui-menu-item {
+  padding: 5px;
+  position: relative;
+  border: 1px solid #ddd;
+  background: white;
+  width: 248px;
+  transition: 0.5s;
+}
 
+.ui-menu-item:hover {
+  background: #ddd;
+}
 
 .list-view {
 	position: absolute;
 	right: 0;
 	top: 0;
 }
-
-
 
 .place-name {
   text-align: 10px;
@@ -136,9 +138,16 @@ h3 {
   .place-image {
     height: 50%;
     width: 50%;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px;
   }
   .place-name {
     font-size: 20px;
+  }
+
+  .reviews {
+    display: none;
   }
 
   #place-toggle {
